@@ -1,0 +1,27 @@
+{
+  "name": "Maruco",
+  "id": "1456966921509605815",
+  "api": "1.0.0",
+  "main": "main.js",
+  "capabilities": [],
+  "enableProposedApi": false,
+  "documentAccess": "dynamic-page",
+  "editorType": ["figma"],
+  "ui": "ui.html",
+  "networkAccess": {
+    "allowedDomains": ["none"]
+  },
+  "menu": [
+    {
+      "name": "Run",
+      "command": "run"
+    },
+    {
+      "separator": true
+    },
+    {
+      "name": "Setting",
+      "command": "setting"
+    }
+  ]
+}

@@ -1,0 +1,29 @@
+{
+  "name": "maruco",
+  "version": "1.0.0",
+  "description": "Your Figma Plugin",
+  "main": "code.js",
+  "type": "module",
+  "scripts": {
+    "build": "rollup -c",
+    "watch": "npm run build -- --watch",
+    "check": "biome check --write *",
+    "test": "jest"
+  },
+  "author": "",
+  "license": "",
+  "devDependencies": {
+    "@babel/core": "^7.26.0",
+    "@babel/preset-env": "^7.26.0",
+    "@babel/preset-typescript": "^7.26.0",
+    "@biomejs/biome": "1.8.3",
+    "@figma/plugin-typings": "*",
+    "@jest/globals": "^29.7.0",
+    "@rollup/plugin-typescript": "^12.1.2",
+    "babel-jest": "^29.7.0",
+    "jest": "^29.7.0",
+    "rollup": "^4.31.0",
+    "tslib": "^2.8.1",
+    "typescript": "^5.7.3"
+  }
+}

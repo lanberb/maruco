@@ -1,0 +1,12 @@
+{
+  "compilerOptions": {
+    "module": "ES6",
+    "target": "es6",
+    "lib": ["ES2016"],
+    "strict": true,
+    "esModuleInterop": true,
+    "moduleResolution": "node",
+    "typeRoots": ["./node_modules/@types", "./node_modules/@figma"]
+  },
+  "include": ["**/*.ts"]
+}

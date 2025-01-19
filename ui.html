@@ -1,0 +1,408 @@
+<main class="logging">
+  <header>
+    <button></button>
+  </header>
+
+  <div id="loggingArea">
+    <ul id="loggingArea__list">
+      <li class="loggingArea__listItem">
+        <div class="loggingArea__listStatusIcon" data-status="pending">
+          <svg class="loggingArea__listStatusIcon--success" width="24" height="24" viewBox="0 0 24 24">
+            <path
+              d="M10.8608 17.3023L6.86084 13.3023L8.26084 11.9023L10.8608 14.5023L17.4608 7.90234L18.8608 9.30234L10.8608 17.3023Z"
+              fill="currentColor" />
+          </svg>
+          <svg class="loggingArea__listStatusIcon--pending" width="24" height="24" viewBox="0 0 24 24">
+            <path d="M6 13V11H18V13H6Z" fill="currentColor" />
+          </svg>
+          <svg class="loggingArea__listStatusIcon--failure" width="24" height="24" viewBox="0 0 24 24">
+            <path
+              d="M8.4 16.9999L7 15.5999L10.6 11.9999L7 8.4249L8.4 7.0249L12 10.6249L15.575 7.0249L16.975 8.4249L13.375 11.9999L16.975 15.5999L15.575 16.9999L12 13.3999L8.4 16.9999Z"
+              fill="currentColor" />
+          </svg>
+        </div>
+        <h4 class="loggingArea__listLabel"></h4>
+        <button class="loggingArea__listZoomButton">
+          詳しく見る
+        </button>
+      </li>
+    </ul>
+  </div>
+
+  <div id="settingArea">
+    <details open>
+      <summary>
+        <h3>
+          Rule - 命名規則
+        </h3>
+      </summary>
+      <select name="" id="modeSelector">
+        <!--
+        Mode Examples
+        - PascalCase (=UpperCamelCase)
+        - camelCase (=LowerCamelCase)
+        - Train-Case (=UpperKebabCase)
+        - kebab-case (=LowerKebabCase)
+        - dot.case
+        - snake_case
+        - Studly_Case
+        - ALL_CAPS
+        -->
+        <option value="pascal">Pascal Case</option>
+        <option value="camel">Camel Case</option>
+        <option value="train">Train Case</option>
+        <option value="kebab">Kebab Case</option>
+        <option value="dot">Dot Case</option>
+        <option value="snake">Snake Case</option>
+        <option value="studly">Studly Case</option>
+        <option value="allcaps">All Caps</option>
+      </select>
+    </details>
+
+    <details open>
+      <summary>
+        <h3>
+          Prefix - 接頭辞
+        </h3>
+      </summary>
+      <textarea name="primary-words-label" id="primaryWordsTextarea"></textarea>
+    </details>
+
+    <details open>
+      <summary>
+        <h3>
+          Root Words - 語根
+        </h3>
+      </summary>
+      <textarea name="secondary-words-label" id="secondaryWordsTextarea"></textarea>
+    </details>
+
+    <details open>
+      <summary>
+        <h3>
+          Suffix - 接尾辞
+        </h3>
+      </summary>
+      <textarea name="tertiary-words-label" id="tertiaryWordsTextarea"></textarea>
+    </details>
+
+    <div id="settingButtonArea">
+      <button id="saveButton">Save</button>
+      <button id="resetButton">Reset</button>
+    </div>
+  </div>
+</main>
+
+<style>
+  * {
+    margin: 0;
+    padding: 0;
+    font-size: 16px;
+    font-family: Inter;
+    font-weight: normal;
+    word-break: break-all;
+    line-height: 1;
+    transition: 100ms;
+  }
+
+  html,
+  body {
+    letter-spacing: 0.01rem;
+    background-color: transparent;
+    min-height: fit-content;
+  }
+
+  main {
+    display: flex;
+    flex-direction: column;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6,
+  select,
+  button {
+    color: var(--figma-color-text);
+  }
+
+  button {
+    font-size: 12px;
+    border-radius: 4px;
+    appearance: none;
+    border: none;
+  }
+
+  button:hover {
+    cursor: pointer;
+  }
+
+  main[class="logging"] div#loggingArea {
+    display: block;
+  }
+
+  main[class="setting"] div#settingArea {
+    display: block;
+  }
+
+  div#loggingArea,
+  div#settingArea {
+    display: none;
+  }
+
+  li.loggingArea__listItem {
+    display: flex;
+    flex-wrap: nowrap;
+    align-items: center;
+    gap: 8px;
+    padding: 8px;
+  }
+
+  li.loggingArea__listItem:first-of-type {
+    display: none;
+  }
+
+  div.loggingArea__listStatusIcon {
+    flex-grow: 0;
+    width: fit-content;
+  }
+
+  div.loggingArea__listStatusIcon svg {
+    display: none;
+  }
+
+  div.loggingArea__listStatusIcon[data-status="success"] svg.loggingArea__listStatusIcon--success {
+    display: block;
+    color: var(--figma-color-icon-success);
+  }
+
+  div.loggingArea__listStatusIcon[data-status="pending"] svg.loggingArea__listStatusIcon--pending {
+    display: block;
+    color: var(--figma-color-icon);
+  }
+
+  div.loggingArea__listStatusIcon[data-status="failure"] svg.loggingArea__listStatusIcon--failure {
+    display: block;
+    color: var(--figma-color-icon-danger);
+  }
+
+  h4.loggingArea__listLabel {
+    font-size: 12px;
+    line-height: 140%;
+    flex-grow: 1;
+  }
+
+  button.loggingArea__listZoomButton {
+    font-size: 10px;
+    padding: 8px 12px;
+    flex-shrink: 0;
+    background-color: var(--figma-color-bg-brand);
+  }
+
+  button.loggingArea__listZoomButton:hover {
+    opacity: 0.6;
+  }
+
+  h3 {
+    font-size: 12px;
+    font-weight: 550;
+  }
+
+  details:not([open]) summary h3 {
+    color: var(--figma-color-text-disabled);
+  }
+
+  div#settingArea details {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding: 24px 16px;
+    border-bottom: solid 1px var(--figma-color-border);
+  }
+
+
+  details:last-of-type {
+    border: none;
+  }
+
+  details summary h3 {
+    margin-bottom: 8px;
+  }
+
+  summary {
+    list-style: none;
+  }
+
+  summary:hover {
+    cursor: pointer;
+  }
+
+  summary:hover h3 {
+    color: var(--figma-color-text-disabled);
+  }
+
+  summary::-webkit-details-marker {
+    display: none;
+  }
+
+  select {
+    background-color: var(--figma-color-bg);
+    border-radius: 4px;
+    padding: 8px 4px;
+    border: solid 1px var(--figma-color-border);
+    font-size: 12px;
+    width: 100%;
+  }
+
+  select:hover {
+    background-color: var(--figma-color-bg-secondary);
+  }
+
+  textarea {
+    width: 100%;
+    min-height: 48px;
+    border-radius: 4px;
+    appearance: none;
+    border: none;
+    resize: none;
+    background-color: var(--figma-color-bg-secondary);
+    color: var(--figma-color-text);
+    padding: 8px;
+    font-size: 14px;
+    line-height: 160%;
+  }
+
+  div#settingButtonArea {
+    position: sticky;
+    bottom: 0;
+    display: flex;
+    justify-content: space-between;
+    gap: 8px;
+    padding: 16px;
+    background-color: var(--figma-color-bg);
+  }
+
+  div#settingButtonArea button {
+    padding: 12px 24px;
+  }
+
+  button#saveButton {
+    flex-grow: 1;
+    background-color: var(--figma-color-bg-brand);
+  }
+
+  button#saveButton:hover {
+    background-color: var(--figma-color-bg-brand-hover);
+  }
+
+  button#saveButton:active {
+    background-color: var(--figma-color-bg-brand-pressed);
+  }
+
+  button#resetButton {
+    background-color: var(--figma-color-bg-danger);
+  }
+
+  button#resetButton:hover {
+    background-color: var(--figma-color-bg-danger-hover);
+  }
+
+  button#resetButton:active {
+    background-color: var(--figma-color-bg-danger-pressed);
+  }
+</style>
+
+<script>
+  let value = {
+    mode: "pascal",
+    words: {
+      primary: [],
+      secondary: [],
+      tertiary: []
+    }
+  };
+
+  document.querySelector('#saveButton').addEventListener("click", () => {
+    const selectedMode = document.querySelector('#modeSelector').value;
+
+    const primaryWords = document.querySelector('#primaryWordsTextarea').value;
+    const secondaryWords = document.querySelector('#secondaryWordsTextarea').value;
+    const tertiaryWords = document.querySelector('#tertiaryWordsTextarea').value;
+
+    parent.postMessage({
+      pluginMessage: {
+        type: 'update',
+        data: {
+          mode: selectedMode,
+          words: {
+            primary: primaryWords.split(",").map(t => t.trim()),
+            secondary: secondaryWords.split(",").map(t => t.trim()),
+            tertiary: tertiaryWords.split(",").map(t => t.trim()),
+          }
+        }
+      }
+    }, '*');
+  });
+
+
+  window.addEventListener("message", (event) => {
+    const { data, type } = event.data.pluginMessage;
+
+    switch (type) {
+      case "setViewMode":
+        {
+          const element = document.querySelector("main");
+          if (element != null) {
+            element.className = "";
+            element.classList.add(data);
+          }
+        }
+        break;
+      case "run":
+      case "response": {
+        value = data;
+        document.querySelector('#primaryWordsTextarea').innerHTML = data.words.primary.join(", ");
+        document.querySelector('#secondaryWordsTextarea').innerHTML = data.words.secondary.join(", ");
+        document.querySelector('#tertiaryWordsTextarea').innerHTML = data.words.tertiary.join(", ");
+
+        document.querySelector(`#modeSelector option[value="${value.mode}"]`).selected = true;
+        break;
+      }
+      case "allNodesBeforeLinting": {
+        const ul = document.querySelector('#loggingArea__list');
+        const li = document.querySelectorAll('.loggingArea__listItem');
+
+        if (ul == null) {
+          break;
+        }
+        data.forEach((data) => {
+          const item = li[0].cloneNode(true);
+
+          const statusIcon = item.children[0];
+          const label = item.children[1];
+          const zoomButton = item.children[2];
+
+          statusIcon.dataset.status = data.status;
+          label.textContent = data.name;
+
+          zoomButton.addEventListener("click", () => {
+            parent.postMessage({
+              pluginMessage: {
+                type: 'zoomNodeById',
+                data: data.id
+              }
+            }, '*');
+          });
+
+          ul.appendChild(item);
+        });
+        break;
+      }
+      default:
+        break;
+    }
+  }
+  );
+</script>

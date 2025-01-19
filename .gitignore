@@ -1,0 +1,12 @@
+# Node
+*.log
+*.log.*
+node_modules
+
+# dist
+out/
+dist/
+code.js
+
+# test
+coverage
