@@ -6,7 +6,7 @@ node_modules
 # dist
 out/
 dist/
-code.js
+main.js
 
 # test
 coverage
