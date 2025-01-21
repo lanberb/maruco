@@ -5,7 +5,7 @@ export default [
     input: "./src/main.ts",
     output: {
       file: "./main.js",
-      format: "cjs",
+      format: "esm",
     },
     plugins: [typescript()],
   },

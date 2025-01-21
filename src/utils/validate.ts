@@ -1,9 +1,8 @@
-interface Props extends Value {
+export function splitComponentName(value: {
+  mode: Mode;
   name: string;
-}
-export function validateComponentName(value: Props): Status {
-  const { mode, name, words } = value;
-
+}): string[] {
+  const { mode, name } = value;
   let tokens: string[] = [];
 
   /**
@@ -31,6 +30,135 @@ export function validateComponentName(value: Props): Status {
       break;
   }
 
+  return tokens;
+}
+
+export function joinByMode(value: {
+  mode: Mode;
+  tokens: string[];
+}) {
+  const { mode, tokens } = value;
+  let word = "";
+
+  /**
+   * nameをtokenごとに結合
+   */
+  switch (mode) {
+    case "pascal":
+    case "camel":
+      word = tokens.join("");
+      break;
+    case "train":
+    case "kebab":
+      word = tokens.join("-");
+      break;
+
+    case "dot":
+      word = tokens.join(".");
+      break;
+    case "snake":
+    case "studly":
+    case "allcaps":
+      word = tokens.join("_");
+      break;
+    default:
+      break;
+  }
+
+  return word;
+}
+
+export function createAllComponentNamePattern(value: {
+  mode: Mode;
+  words: {
+    primary: string[];
+    secondary: string[];
+    tertiary: string[];
+  };
+}): string[] {
+  const { mode, words } = value;
+
+  const allPattern = words.primary.reduce<string[]>((arr, primaryWord) => {
+    /**
+     * 1. Patterns consisting of prefixes, root words, suffixes.
+     */
+    words.secondary.forEach((secondaryWord) => {
+      words.tertiary.forEach((tertiaryWord) => {
+        const word = joinByMode({
+          mode,
+          tokens: [primaryWord, secondaryWord, tertiaryWord],
+        });
+        arr.push(word);
+      });
+    });
+
+    /**
+     * 2. Patterns consisting of prefixes and suffixes.
+     */
+    words.tertiary.forEach((tertiaryWord) => {
+      const word = joinByMode({
+        mode,
+        tokens: [primaryWord, tertiaryWord],
+      });
+      arr.push(word);
+    });
+
+    return arr;
+  }, []);
+
+  return allPattern;
+}
+
+export function validateComponentName(value: {
+  name: string;
+  mode: Mode;
+  words: {
+    primary: string[];
+    secondary: string[];
+    tertiary: string[];
+  };
+}): Status {
+  return validateComponentNameByMatchingAnyPatterns(value);
+}
+
+export function validateComponentNameByMatchingAnyPatterns(value: {
+  name: string;
+  mode: Mode;
+  words: {
+    primary: string[];
+    secondary: string[];
+    tertiary: string[];
+  };
+}): Status {
+  const { mode, name, words } = value;
+
+  const allPattern = createAllComponentNamePattern({
+    mode,
+    words,
+  });
+
+  return allPattern.includes(name) ? "success" : "failure";
+}
+
+/**
+ * @deprecated This method cannot validate specific patterns that have prefixes and suffixes consisting of more than two words.
+ *
+ * Clearly known error modes
+ * - Pascal Case
+ * - Camel Case
+ */
+export function validateComponentNameBySplittingWords(value: {
+  name: string;
+  mode: Mode;
+  words: {
+    primary: string[];
+    secondary: string[];
+    tertiary: string[];
+  };
+}): Status {
+  const { mode, name, words } = value;
+
+  const tokens = splitComponentName({ mode, name });
   /**
    * tokenが3単語以上になっていないか判定
    */
