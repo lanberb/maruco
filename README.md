@@ -1,5 +1,5 @@
 # Maruco
-This plugin for Figma that makes rules for component naming.
+A plugin for Figma that makes rules for component naming.
 
 ## What rules are created by Maruco?
 1. Defines string format rules. (ex. Pascal Case, Snake Case)
