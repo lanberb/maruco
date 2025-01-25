@@ -109,18 +109,6 @@ export function createAllComponentNamePattern(value: {
   return allPattern;
 }
 
-export function validateComponentName(value: {
-  name: string;
-  mode: Mode;
-  words: {
-    primary: string[];
-    secondary: string[];
-    tertiary: string[];
-  };
-}): Status {
-  return validateComponentNameByMatchingAnyPatterns(value);
-}
-
 export function validateComponentNameByMatchingAnyPatterns(value: {
   name: string;
   mode: Mode;
@@ -141,13 +129,30 @@ export function validateComponentNameByMatchingAnyPatterns(value: {
 }
 
 /**
+ *
+ * @summary You ought to use this method primarily for validating component names.
+ * @returns
+ */
+export function validateComponentName(value: {
+  name: string;
+  mode: Mode;
+  words: {
+    primary: string[];
+    secondary: string[];
+    tertiary: string[];
+  };
+}): Status {
+  return validateComponentNameByMatchingAnyPatterns(value);
+}
+
+/**
  * @deprecated This method cannot validate specific patterns that have prefixes and suffixes consisting of more than two words.
  *
  * Clearly known error modes
  * - Pascal Case
  * - Camel Case
  */
-export function validateComponentNameBySplittingWords(value: {
+function _validateComponentNameBySplittingWords(value: {
   name: string;
   mode: Mode;
   words: {

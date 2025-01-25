@@ -1,6 +1,10 @@
-import { createValue, createWords, validateComponentName } from "./utils";
-
-const CLIENT_STORAGE_KEY = `name-ruler-${figma.fileKey}`;
+import {
+  CLIENT_STORAGE_KEY,
+  createValue,
+  createWords,
+  getSavedValue,
+  validateComponentName,
+} from "./utils";
 
 async function main() {
   figma.skipInvisibleInstanceChildren = true;
@@ -10,8 +14,7 @@ async function main() {
     // height: 400,
     themeColors: true,
   });
-  const savedValue = await figma.clientStorage.getAsync(CLIENT_STORAGE_KEY);
-  const value = createValue(savedValue == null ? {} : savedValue);
+  const value = await getSavedValue();
 
   switch (figma.command) {
     case "run": {
@@ -58,8 +61,7 @@ async function main() {
 main();
 
 figma.once("run", async () => {
-  const savedValue = await figma.clientStorage.getAsync(CLIENT_STORAGE_KEY);
-  const value = createValue(savedValue == null ? {} : savedValue);
+  const value = await getSavedValue();
 
   figma.ui.postMessage({
     type: "run",
@@ -68,16 +70,15 @@ figma.once("run", async () => {
 });
 
 figma.ui.on("message", async (msg: { type: string; data: unknown }) => {
-  const savedValue = await figma.clientStorage.getAsync(CLIENT_STORAGE_KEY);
-  let value = createValue(savedValue == null ? {} : savedValue);
+  let value = await getSavedValue();
 
   switch (msg.type) {
     case "update": {
       const data = msg.data as Partial<Value>;
 
       value = createValue({
-        ...savedValue,
-        mode: data.mode ?? savedValue.mode,
+        ...value,
+        mode: data.mode ?? value.mode,
         words: {
           primary: createWords(data.words?.primary ?? []),
           secondary: createWords(data.words?.secondary ?? []),
