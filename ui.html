@@ -1,31 +1,286 @@
-<main class="logging">
+<main class="checking">
   <header>
-    <button></button>
+    <button id="header__button--help">
+      Help / 使い方
+    </button>
+    <div>
+      <button id="header__button--setting">Setting / 設定</button>
+      <button id="header__button--checking">Run / テストする</button>
+    </div>
   </header>
 
-  <div id="loggingArea">
-    <ul id="loggingArea__list">
-      <li class="loggingArea__listItem">
-        <div class="loggingArea__listStatusIcon" data-status="pending">
-          <svg class="loggingArea__listStatusIcon--success" width="24" height="24" viewBox="0 0 24 24">
+  <div id="helpArea">
+    <!-- What is this? -->
+    <details open class="helpArea__details">
+      <summary>
+        <h3>
+          What is this?
+        </h3>
+      </summary>
+      <p class="helpArea__description--ja">
+        Marucoは、Figma上のコンポーネントに命名規則の設定と違反のテストを行えるプラグインです。
+      </p>
+      <p class="helpArea__description--en">
+        Maruco is a plugin that provides rules and validation for component naming, helping you identify components that
+        violate naming conventions and elements.
+      </p>
+    </details>
+    <!-- 1. Selecting naming convention. -->
+    <details open class="helpArea__details">
+      <summary>
+        <h3>
+          1. Selecting naming convention.
+        </h3>
+      </summary>
+      <p class="helpArea__description--ja">
+        まずは「命名規則」を選択しましょう。
+        <br>
+        命名規則には、パスカルケースやスネークケースといった様々なフォーマットが存在します。exampleと見比べながらプロジェクトに最適な命名規則を選びましょう。
+      </p>
+      <p class="helpArea__description--en">
+        There are several conventions, let's select the best one for your project.
+      </p>
+    </details>
+    <!-- 2. Entering naming elements. -->
+    <details open class="helpArea__details">
+      <summary>
+        <h3>
+          2. Entering naming elements.
+        </h3>
+      </summary>
+      <details class="helpArea__detailsGuides">
+        <summary>日本語のガイドはこちら</summary>
+        <p class="helpArea__description--ja">
+          次にコンポーネント名を構成する「単語」を入力しましょう。
+          <br>
+          単語間にカンマ(,)を入力することで、複数の単語を入力できます。
+          <br>
+          Marucoは、コンポーネントの名前を「接頭辞 + 中間語 + 接尾辞」の3要素で解釈します。
+          <span class="helpArea__example">
+            例）ArticleCardList
+            <br>
+            接頭辞: Article
+            <br>
+            中間語: Card
+            <br>
+            接尾辞: List
+          </span>
+          テスト時は、3要素に入力された単語の全ての組み合わせをリストアップし、テスト対象のコンポーネント名がリストに含まれているかを検証します。
+          <span class="helpArea__example">
+            テスト対象: ArticleEditableGroup
+            <br>
+            <br>
+            入力された接頭辞: Article, Banner, Chart
+            <br>
+            入力された中間語: Data, Editable
+            <br>
+            入力された接尾辞: Footer, Group
+            <br>
+            <br>
+            ↓↓↓↓
+            <br>
+            <br>
+            - ArticleDataFooter
+            <br>
+            - ArticleDataGroup
+            <br>
+            - ArticleEditableFooter
+            <br>
+            - ArticleEditableGroup ← テスト対象と一致するためクリア🍹
+            <br>
+            - BannerDataFooter
+            <br>
+            - BannerDataGroup
+            <br>
+            - BannerEditableFooter
+            <br>
+            ...
+            <br>
+          </span>
+          3要素は、それぞれ1つの単語から成り立つ必要はありません。必要に応じて複数の単語を組み合わせられます。
+          <span class="helpArea__example">
+            入力された接頭辞: HomeArticle 👈🏻 2単語で構成されている
+            <br>
+            入力された中間語: Card
+            <br>
+            入力された接尾辞: List, Form
+            <br>
+            <br>
+            ↓↓↓↓
+            <br>
+            <br>
+            - HomeArticleCardList
+            <br>
+            - HomeArticleCardForm
+            <br>
+            ...
+          </span>
+          また、中間語は省略可能です。
+          <br>
+          汎用的なコンポーネントを考慮して「接頭辞 + 接尾辞」もしくは「接尾辞のみ」に一致する命名も許可します。
+          <span class="helpArea__example">
+            テスト対象: Carousel
+            <br>
+            <br>
+            入力された接頭辞: HomeArticle
+            <br>
+            入力された中間語:
+            <br>
+            入力された接尾辞: CardList, Carousel
+            <br>
+            <br>
+            ↓↓↓↓
+            <br>
+            <br>
+            - HomeArticleCardList
+            <br>
+            - HomeArticleCarousel
+            <br>
+            - CardList
+            <br>
+            - Carousel ← テスト対象と一致するためクリア🍹
+          </span>
+        </p>
+      </details>
+      <details class="helpArea__detailsGuides">
+        <summary>Open English Guide.</summary>
+        <p class="helpArea__description--ja">
+          Next, you can enter "words" that makes up the component's name.
+          <br>
+          Enter a comma between words to set multiple words.
+          <br>
+          Maruco guesses that the component's name is made up of three elements: a prefix, a middle word and a suffix.
+          <span class="helpArea__example">
+            ex）ArticleCardList
+            <br>
+            Prefix: Article
+            <br>
+            Middle: Card
+            <br>
+            Suffix: List
+          </span>
+          During testing, Maruco generates all patterns made up of three elements and checks if the target component's
+          name is included in these patterns.
+          <span class="helpArea__example">
+            Test Target: ArticleEditableGroup
+            <br>
+            <br>
+            Entered prefix: Article, Banner, Chart
+            <br>
+            Entered middle: Data, Editable
+            <br>
+            Entered suffix: Footer, Group
+            <br>
+            <br>
+            ↓↓↓↓
+            <br>
+            <br>
+            - ArticleDataFooter
+            <br>
+            - ArticleDataGroup
+            <br>
+            - ArticleEditableFooter
+            <br>
+            - ArticleEditableGroup ← Included in generated patterns!🍹
+            <br>
+            - BannerDataFooter
+            <br>
+            - BannerDataGroup
+            <br>
+            - BannerEditableFooter
+            <br>
+            ...
+            <br>
+          </span>
+          It is NOT necessary for each of the three elements to be made up of just one word.
+          You can enter any combination of words with more than two words if needed.
+          <span class="helpArea__example">
+            Entered prefix: HomeArticle 👈🏻 Made up of two words.
+            <br>
+            Entered middle: Card
+            <br>
+            Entered suffix: List, Form
+            <br>
+            <br>
+            ↓↓↓↓
+            <br>
+            <br>
+            - HomeArticleCardList
+            <br>
+            - HomeArticleCardForm
+            <br>
+            ...
+          </span>
+          The middle word is optional.
+          <br>
+          Exceptionally, Maruco allows 'Prefix + Suffix' or just 'Suffix' patterns for basic components.
+          <span class="helpArea__example">
+            Test Target: Carousel
+            <br>
+            <br>
+            Entered prefix: HomeArticle
+            <br>
+            Entered middle:
+            <br>
+            Entered suffix: CardList, Carousel
+            <br>
+            <br>
+            ↓↓↓↓
+            <br>
+            <br>
+            - HomeArticleCardList
+            <br>
+            - HomeArticleCarousel
+            <br>
+            - CardList
+            <br>
+            - Carousel ← Included in generated patterns!🍹
+          </span>
+        </p>
+      </details>
+    </details>
+    <!-- 3. Running validation. -->
+    <details open class="helpArea__details">
+      <summary>
+        <h3>
+          3. Running validation.
+        </h3>
+      </summary>
+      <p class="helpArea__description--ja">
+        設定が完了したら、画面の右上の「Run / テストする」を押してテストを実行しましょう。
+        <br>
+        テストは一瞬で完了します。
+      </p>
+      <p class="helpArea__description--en">
+        That's all. Let's run the validation.
+      </p>
+    </details>
+  </div>
+
+  <div id="checkingArea">
+    <ul id="checkingArea__list">
+      <!-- This is template of the result list item. -->
+      <!-- <li class="checkingArea__listItem">
+        <div class="checkingArea__listStatusIcon" data-status="pending">
+          <svg class="checkingArea__listStatusIcon--success" width="24" height="24" viewBox="0 0 24 24">
             <path
               d="M10.8608 17.3023L6.86084 13.3023L8.26084 11.9023L10.8608 14.5023L17.4608 7.90234L18.8608 9.30234L10.8608 17.3023Z"
               fill="currentColor" />
           </svg>
-          <svg class="loggingArea__listStatusIcon--pending" width="24" height="24" viewBox="0 0 24 24">
+          <svg class="checkingArea__listStatusIcon--pending" width="24" height="24" viewBox="0 0 24 24">
             <path d="M6 13V11H18V13H6Z" fill="currentColor" />
           </svg>
-          <svg class="loggingArea__listStatusIcon--failure" width="24" height="24" viewBox="0 0 24 24">
+          <svg class="checkingArea__listStatusIcon--failure" width="24" height="24" viewBox="0 0 24 24">
             <path
               d="M8.4 16.9999L7 15.5999L10.6 11.9999L7 8.4249L8.4 7.0249L12 10.6249L15.575 7.0249L16.975 8.4249L13.375 11.9999L16.975 15.5999L15.575 16.9999L12 13.3999L8.4 16.9999Z"
               fill="currentColor" />
           </svg>
         </div>
-        <h4 class="loggingArea__listLabel"></h4>
-        <button class="loggingArea__listZoomButton">
+        <h4 class="checkingArea__listLabel"></h4>
+        <button class="checkingArea__listZoomButton">
           詳しく見る
         </button>
-      </li>
+      </li> -->
     </ul>
   </div>
 
@@ -33,8 +288,9 @@
     <details open>
       <summary>
         <h3>
-          Rule - 命名規則
+          Select Naming Convention.
         </h3>
+        <h4>命名規則を選んでください</h4>
       </summary>
       <select name="" id="modeSelector">
         <!--
@@ -48,47 +304,50 @@
         - Studly_Case
         - ALL_CAPS
         -->
-        <option value="pascal">Pascal Case</option>
-        <option value="camel">Camel Case</option>
-        <option value="train">Train Case</option>
-        <option value="kebab">Kebab Case</option>
-        <option value="dot">Dot Case</option>
-        <option value="snake">Snake Case</option>
-        <option value="studly">Studly Case</option>
-        <option value="allcaps">All Caps</option>
+        <option value="pascal">Pascal Case (ex: SampleComponentName)</option>
+        <option value="camel">Camel Case (ex: sampleComponentName)</option>
+        <option value="train">Train Case (ex: Sample-Component-Name)</option>
+        <option value="kebab">Kebab Case (ex: sample-component-name)</option>
+        <option value="dot">Dot Case (ex: sample.component.name)</option>
+        <option value="snake">Snake Case (ex: sample_component_name)</option>
+        <option value="studly">Studly Case (ex: Sample_Component_Name)</option>
+        <option value="allcaps">All Caps (ex: SAMPLE_COMPONENT_NAME)</option>
       </select>
     </details>
 
     <details open>
       <summary>
         <h3>
-          Prefix - 接頭辞
+          Enter the prefixes used for the components.
         </h3>
+        <h4>接頭辞を入力してください</h4>
       </summary>
-      <textarea name="primary-words-label" id="primaryWordsTextarea"></textarea>
+      <textarea id="primaryWordsTextarea"></textarea>
+    </details>
+
+    <details open class="settingArea__details--optional">
+      <summary>
+        <h3>
+          Enter the middle words used for the components.
+        </h3>
+        <h4>中間の単語を入力してください</h4>
+      </summary>
+      <textarea id="secondaryWordsTextarea"></textarea>
     </details>
 
     <details open>
       <summary>
         <h3>
-          Root Words - 語根
+          Enter the prefixes used for the components.
         </h3>
+        <h4>接尾辞を入力してください</h4>
       </summary>
-      <textarea name="secondary-words-label" id="secondaryWordsTextarea"></textarea>
+      <textarea id="tertiaryWordsTextarea"></textarea>
     </details>
 
-    <details open>
-      <summary>
-        <h3>
-          Suffix - 接尾辞
-        </h3>
-      </summary>
-      <textarea name="tertiary-words-label" id="tertiaryWordsTextarea"></textarea>
-    </details>
-
-    <div id="settingButtonArea">
-      <button id="saveButton">Save</button>
-      <button id="resetButton">Reset</button>
+    <div id="settingArea__buttonArea">
+      <button id="settingArea__saveButton">Save</button>
+      <!-- <button id="settingArea__resetButton">Reset</button> -->
     </div>
   </div>
 </main>
@@ -100,7 +359,7 @@
     font-size: 16px;
     font-family: Inter;
     font-weight: normal;
-    word-break: break-all;
+    letter-spacing: 0.2px;
     line-height: 1;
     transition: 100ms;
   }
@@ -123,8 +382,11 @@
   h4,
   h5,
   h6,
+  p,
+  summary,
   select,
-  button {
+  button,
+  svg {
     color: var(--figma-color-text);
   }
 
@@ -137,109 +399,10 @@
 
   button:hover {
     cursor: pointer;
-  }
-
-  main[class="logging"] div#loggingArea {
-    display: block;
-  }
-
-  main[class="setting"] div#settingArea {
-    display: block;
-  }
-
-  div#loggingArea,
-  div#settingArea {
-    display: none;
-  }
-
-  li.loggingArea__listItem {
-    display: flex;
-    flex-wrap: nowrap;
-    align-items: center;
-    gap: 8px;
-    padding: 8px;
-  }
-
-  li.loggingArea__listItem:first-of-type {
-    display: none;
-  }
-
-  div.loggingArea__listStatusIcon {
-    flex-grow: 0;
-    width: fit-content;
-  }
-
-  div.loggingArea__listStatusIcon svg {
-    display: none;
-  }
-
-  div.loggingArea__listStatusIcon[data-status="success"] svg.loggingArea__listStatusIcon--success {
-    display: block;
-    color: var(--figma-color-icon-success);
-  }
-
-  div.loggingArea__listStatusIcon[data-status="pending"] svg.loggingArea__listStatusIcon--pending {
-    display: block;
-    color: var(--figma-color-icon);
-  }
-
-  div.loggingArea__listStatusIcon[data-status="failure"] svg.loggingArea__listStatusIcon--failure {
-    display: block;
-    color: var(--figma-color-icon-danger);
-  }
-
-  h4.loggingArea__listLabel {
-    font-size: 12px;
-    line-height: 140%;
-    flex-grow: 1;
-  }
-
-  button.loggingArea__listZoomButton {
-    font-size: 10px;
-    padding: 8px 12px;
-    flex-shrink: 0;
-    background-color: var(--figma-color-bg-brand);
-  }
-
-  button.loggingArea__listZoomButton:hover {
     opacity: 0.6;
   }
 
-  h3 {
-    font-size: 12px;
-    font-weight: 550;
-  }
-
   details:not([open]) summary h3 {
-    color: var(--figma-color-text-disabled);
-  }
-
-  div#settingArea details {
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-    padding: 24px 16px;
-    border-bottom: solid 1px var(--figma-color-border);
-  }
-
-
-  details:last-of-type {
-    border: none;
-  }
-
-  details summary h3 {
-    margin-bottom: 8px;
-  }
-
-  summary {
-    list-style: none;
-  }
-
-  summary:hover {
-    cursor: pointer;
-  }
-
-  summary:hover h3 {
     color: var(--figma-color-text-disabled);
   }
 
@@ -247,7 +410,208 @@
     display: none;
   }
 
-  select {
+  summary:hover {
+    cursor: pointer;
+  }
+
+  summary:hover>* {
+    color: var(--figma-color-text-disabled);
+  }
+
+  header {
+    position: sticky;
+    inset: 0;
+    padding: 8px;
+    border-bottom: solid 1px var(--figma-color-border);
+    background: var(--figma-color-bg);
+    display: flex;
+    justify-content: space-between;
+    z-index: 9999;
+  }
+
+  header button {
+    display: block;
+    padding: 6px 8px;
+    background: var(--figma-color-bg-secondary);
+    border-radius: 4px;
+    font-size: 10px;
+  }
+
+  header div {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+  }
+
+
+  main[class="checking"] div#checkingArea {
+    display: block;
+  }
+
+  main[class="setting"] div#settingArea {
+    display: block;
+  }
+
+  main[class="help"] div#helpArea {
+    display: block;
+  }
+
+  div#helpArea,
+  div#checkingArea,
+  div#settingArea {
+    display: none;
+  }
+
+  div#helpArea {
+    padding-inline: 14px;
+  }
+
+  div#helpArea details.helpArea__details {
+    padding-block: 24px;
+    border-bottom: solid 1px var(--figma-color-border);
+  }
+
+  div#helpArea details.helpArea__details>summary {
+    margin-bottom: 12px;
+    list-style: none;
+  }
+
+  div#helpArea details.helpArea__details summary h3 {
+    font-size: 20px;
+    font-weight: 550;
+  }
+
+  div#helpArea details.helpArea__details p {
+    font-size: 12px;
+  }
+
+  div#helpArea details.helpArea__details p.helpArea__description--ja {
+    line-height: 180%;
+    margin-bottom: 8px;
+  }
+
+  div#helpArea details.helpArea__details p.helpArea__description--en {
+    color: var(--figma-color-text-secondary);
+    line-height: 160%;
+  }
+
+  div#helpArea details.helpArea__details span.helpArea__example {
+    display: block;
+    padding: 12px;
+    margin-block: 8px;
+    border-radius: 4px;
+    background-color: var(--figma-color-bg-secondary);
+    font-size: 11px;
+    line-height: 160%;
+  }
+
+  div#helpArea details.helpArea__details details.helpArea__detailsGuides summary {
+    padding-block: 12px;
+    font-size: 14px;
+    font-weight: 600;
+  }
+
+  div#checkingArea ul li.checkingArea__listItem {
+    display: flex;
+    flex-wrap: nowrap;
+    align-items: center;
+    gap: 8px;
+    padding: 8px;
+  }
+
+  div#checkingArea ul li.checkingArea__listItem:first-of-type {
+    display: none;
+  }
+
+  div#checkingArea ul li.checkingArea__listItem div.checkingArea__listStatusIcon {
+    flex-grow: 0;
+    width: fit-content;
+  }
+
+  div#checkingArea ul li.checkingArea__listItem div.checkingArea__listStatusIcon svg {
+    display: none;
+  }
+
+  div#checkingArea ul li.checkingArea__listItem div.checkingArea__listStatusIcon[data-status="success"] svg.checkingArea__listStatusIcon--success {
+    display: block;
+    color: var(--figma-color-icon-success);
+  }
+
+  div#checkingArea ul li.checkingArea__listItem div.checkingArea__listStatusIcon[data-status="pending"] svg.checkingArea__listStatusIcon--pending {
+    display: block;
+    color: var(--figma-color-icon);
+  }
+
+  div#checkingArea ul li.checkingArea__listItem div.checkingArea__listStatusIcon[data-status="failure"] svg.checkingArea__listStatusIcon--failure {
+    display: block;
+    color: var(--figma-color-icon-danger);
+  }
+
+  div#checkingArea ul li.checkingArea__listItem h4.checkingArea__listLabel {
+    font-size: 12px;
+    line-height: 140%;
+    flex-grow: 1;
+    word-break: break-all;
+  }
+
+  div#checkingArea ul li.checkingArea__listItem button.checkingArea__listZoomButton {
+    font-size: 10px;
+    padding: 8px 12px;
+    flex-shrink: 0;
+    background-color: var(--figma-color-bg-brand);
+  }
+
+  div#checkingArea ul li.checkingArea__listItem button.checkingArea__listZoomButton:hover {
+    opacity: 0.6;
+  }
+
+  div#settingArea {
+    position: relative;
+  }
+
+  div#settingArea details {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding: 0 14px 28px;
+  }
+
+  div#settingArea details:first-of-type {
+    padding-top: 24px;
+  }
+
+  div#settingArea details summary {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-bottom: 12px;
+    list-style: none;
+  }
+
+  div#settingArea details:not(.settingArea__details--optional) summary {
+    /* detailsを閉じられないように */
+    pointer-events: none;
+  }
+
+  div#settingArea details summary h3 {
+    font-size: 12px;
+    font-weight: 550;
+  }
+
+  div#settingArea details summary h4 {
+    font-size: 11px;
+    font-weight: lighter;
+    color: var(--figma-color-text-secondary);
+  }
+
+  div#settingArea details.settingArea__details--optional summary::after {
+    content: "※ optional / 省略可能";
+    color: var(--figma-color-text-warning);
+    font-size: 10px;
+    display: block;
+  }
+
+  div#settingArea details select {
     background-color: var(--figma-color-bg);
     border-radius: 4px;
     padding: 8px 4px;
@@ -256,17 +620,17 @@
     width: 100%;
   }
 
-  select:hover {
+  div#settingArea details select:hover {
     background-color: var(--figma-color-bg-secondary);
   }
 
-  textarea {
+  div#settingArea details textarea {
+    max-width: 100%;
     width: 100%;
     min-height: 48px;
     border-radius: 4px;
     appearance: none;
     border: none;
-    resize: none;
     background-color: var(--figma-color-bg-secondary);
     color: var(--figma-color-text);
     padding: 8px;
@@ -274,7 +638,7 @@
     line-height: 160%;
   }
 
-  div#settingButtonArea {
+  div#settingArea__buttonArea {
     position: sticky;
     bottom: 0;
     display: flex;
@@ -282,34 +646,35 @@
     gap: 8px;
     padding: 16px;
     background-color: var(--figma-color-bg);
+    border-top: solid 1px var(--figma-color-border);
   }
 
-  div#settingButtonArea button {
+  div#settingArea__buttonArea button {
     padding: 12px 24px;
   }
 
-  button#saveButton {
+  button#settingArea__saveButton {
     flex-grow: 1;
     background-color: var(--figma-color-bg-brand);
   }
 
-  button#saveButton:hover {
+  button#settingArea__saveButton:hover {
     background-color: var(--figma-color-bg-brand-hover);
   }
 
-  button#saveButton:active {
+  button#settingArea__saveButton:active {
     background-color: var(--figma-color-bg-brand-pressed);
   }
 
-  button#resetButton {
+  button#settingArea__resetButton {
     background-color: var(--figma-color-bg-danger);
   }
 
-  button#resetButton:hover {
+  button#settingArea__resetButton:hover {
     background-color: var(--figma-color-bg-danger-hover);
   }
 
-  button#resetButton:active {
+  button#settingArea__resetButton:active {
     background-color: var(--figma-color-bg-danger-pressed);
   }
 </style>
@@ -324,7 +689,37 @@
     }
   };
 
-  document.querySelector('#saveButton').addEventListener("click", () => {
+  function changeViewMode(mode) {
+    const element = document.querySelector("main");
+    if (element != null) {
+      element.className = "";
+      element.classList.add(mode);
+    }
+  }
+
+  function runningValidation() {
+    parent.postMessage({
+      pluginMessage: {
+        type: 'runningValidation',
+      }
+    }, '*');
+  }
+
+  document.querySelector("#header__button--help").addEventListener("click", () => {
+    changeViewMode("help");
+  });
+
+  document.querySelector("#header__button--checking").addEventListener("click", () => {
+    changeViewMode("checking");
+
+    runningValidation();
+  });
+
+  document.querySelector("#header__button--setting").addEventListener("click", () => {
+    changeViewMode("setting");
+  });
+
+  document.querySelector('#settingArea__saveButton').addEventListener("click", () => {
     const selectedMode = document.querySelector('#modeSelector').value;
 
     const primaryWords = document.querySelector('#primaryWordsTextarea').value;
@@ -351,15 +746,10 @@
     const { data, type } = event.data.pluginMessage;
 
     switch (type) {
-      case "setViewMode":
-        {
-          const element = document.querySelector("main");
-          if (element != null) {
-            element.className = "";
-            element.classList.add(data);
-          }
-        }
+      case "setViewMode": {
+        changeViewMode(data);
         break;
+      }
       case "run":
       case "response": {
         value = data;
@@ -370,16 +760,44 @@
         document.querySelector(`#modeSelector option[value="${value.mode}"]`).selected = true;
         break;
       }
-      case "allNodesBeforeLinting": {
-        const ul = document.querySelector('#loggingArea__list');
-        const li = document.querySelectorAll('.loggingArea__listItem');
+      case "validated": {
+        const ul = document.querySelector('#checkingArea__list');
 
         if (ul == null) {
           break;
         }
-        data.forEach((data) => {
-          const item = li[0].cloneNode(true);
 
+        const listItemTemplate = `
+          <li class="checkingArea__listItem">
+            <div class="checkingArea__listStatusIcon" data-status="pending">
+              <svg class="checkingArea__listStatusIcon--success" width="24" height="24" viewBox="0 0 24 24">
+                <path
+                  d="M10.8608 17.3023L6.86084 13.3023L8.26084 11.9023L10.8608 14.5023L17.4608 7.90234L18.8608 9.30234L10.8608 17.3023Z"
+                  fill="currentColor" />
+              </svg>
+              <svg class="checkingArea__listStatusIcon--pending" width="24" height="24" viewBox="0 0 24 24">
+                <path d="M6 13V11H18V13H6Z" fill="currentColor" />
+              </svg>
+              <svg class="checkingArea__listStatusIcon--failure" width="24" height="24" viewBox="0 0 24 24">
+                <path
+                  d="M8.4 16.9999L7 15.5999L10.6 11.9999L7 8.4249L8.4 7.0249L12 10.6249L15.575 7.0249L16.975 8.4249L13.375 11.9999L16.975 15.5999L15.575 16.9999L12 13.3999L8.4 16.9999Z"
+                  fill="currentColor" />
+              </svg>
+            </div>
+            <h4 class="checkingArea__listLabel"></h4>
+            <button class="checkingArea__listZoomButton">
+              詳しく見る
+            </button>
+          </li>
+        `;
+
+        // 結果一覧の初期化
+        ul.innerHTML = listItemTemplate;
+        const li = document.querySelectorAll('.checkingArea__listItem');
+
+        // 結果を挿入
+        data.forEach((data, i) => {
+          const item = li[0].cloneNode(true);
           const statusIcon = item.children[0];
           const label = item.children[1];
           const zoomButton = item.children[2];

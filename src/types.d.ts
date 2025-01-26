@@ -32,3 +32,9 @@ declare interface Value {
     tertiary: string[];
   };
 }
+
+declare interface Result {
+  id: string;
+  name: string;
+  status: Status;
+}

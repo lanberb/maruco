@@ -78,33 +78,44 @@ export function createAllComponentNamePattern(value: {
 }): string[] {
   const { mode, words } = value;
 
-  const allPattern = words.primary.reduce<string[]>((arr, primaryWord) => {
-    /**
-     * 1. Patterns consisting of prefixes, root words, suffixes.
-     */
-    words.secondary.forEach((secondaryWord) => {
+  // prefixから始まる全てのパターン
+  const combinatedPattern = words.primary.reduce<string[]>(
+    (arr, primaryWord) => {
+      /**
+       * 1. Patterns consisting of prefixes, root words, suffixes.
+       */
+      words.secondary.forEach((secondaryWord) => {
+        words.tertiary.forEach((tertiaryWord) => {
+          const word = joinByMode({
+            mode,
+            tokens: [primaryWord, secondaryWord, tertiaryWord],
+          });
+          arr.push(word);
+        });
+      });
+
+      /**
+       * 2. Patterns consisting of prefixes and suffixes.
+       */
       words.tertiary.forEach((tertiaryWord) => {
         const word = joinByMode({
           mode,
-          tokens: [primaryWord, secondaryWord, tertiaryWord],
+          tokens: [primaryWord, tertiaryWord],
         });
         arr.push(word);
       });
-    });
 
-    /**
-     * 2. Patterns consisting of prefixes and suffixes.
-     */
-    words.tertiary.forEach((tertiaryWord) => {
-      const word = joinByMode({
-        mode,
-        tokens: [primaryWord, tertiaryWord],
-      });
-      arr.push(word);
-    });
+      return arr;
+    },
+    [],
+  );
 
-    return arr;
-  }, []);
+  /**
+   * 3. Patterns consisting of suffixes.
+   */
+  const allPattern = [...combinatedPattern, ...words.tertiary.concat()];
+
+  console.log(allPattern);
 
   return allPattern;
 }
@@ -172,7 +183,7 @@ function _validateComponentNameBySplittingWords(value: {
   }
 
   /**
-   * 文体のチェック
+   * 文体のテスト
    */
   switch (mode) {
     case "pascal": {
@@ -263,10 +274,9 @@ function _validateComponentNameBySplittingWords(value: {
   }
 
   /**
-   * 単語のチェック
+   * 単語のテスト
    */
   if (words.primary.includes(tokens[0]) === false) {
-    // console.log(words.primary, tokens[0], words.primary.includes(tokens[0]));
     return "failure";
   }
   if ([...words.secondary, ...words.tertiary].includes(tokens[1]) === false) {
